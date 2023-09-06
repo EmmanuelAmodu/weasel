@@ -8,91 +8,8 @@
 #include <cerrno>
 #include <map>
 #include <vector>
+#include "./Request.h"
 
-struct Request
-{
-  std::string method;
-  std::string path;
-  std::string version;
-  std::map<std::string, std::string> headers;
-  std::vector<std::string> headersKeys;
-  std::vector<std::string> headersValues;
-  std::string body;
-};
-
-Request parseRequest(char buffer[])
-{
-  Request request;
-  buffer[2047] = '\0'; // Null-terminate the string
-  // std::cout << "Received request:\n" << buffer << std::endl;
-
-  // convert buffer to vector of strings serated by \n
-  std::vector<std::string> bufferVector;
-  std::string temp = "";
-  for (int i = 0; i < 2048; i++)
-  {
-    if (buffer[i] == '\n')
-    {
-      bufferVector.push_back(temp);
-      temp = "";
-    }
-    else
-    {
-      temp += buffer[i];
-    }
-  }
-
-  std::string line = bufferVector[0];
-
-  size_t methodEnd = line.find(' ');
-  if (methodEnd == std::string::npos)
-  {
-    std::cerr << "Error parsing Methods, Invalid Request" << std::endl;
-    exit(1);
-  }
-  request.method = line.substr(0, methodEnd);
-
-  // Parse the path
-  size_t pathEnd = line.find(' ', methodEnd + 1);
-  if (pathEnd == std::string::npos)
-  {
-    std::cerr << "Error parsing request path, Invalid Request" << std::endl;
-    exit(1);
-  }
-  request.path = line.substr(methodEnd + 1, pathEnd - methodEnd - 1);
-
-  // Parse the HTTP version
-  size_t versionEnd = line.find('\r', pathEnd + 1);
-  if (versionEnd == std::string::npos)
-  {
-    std::cerr << "Error parsing http versions, Invalid Request" << std::endl;
-    exit(1);
-  }
-  request.version = line.substr(pathEnd + 1, versionEnd - pathEnd - 1);
-
-  // Parse the headers
-  int length = bufferVector.size();
-  for (int i = 1; i < length - 1; i++)
-  {
-    line = bufferVector[i];
-    size_t colonPos = line.find(':');
-    if (colonPos == std::string::npos)
-    {
-      std::cerr << "Error paring request header, Invalid Request" << std::endl;
-      exit(1);
-    }
-    std::string key = line.substr(0, colonPos);
-    std::string value = line.substr(colonPos + 1, line.length() - colonPos - 2);
-    request.headers[key] = value;
-    request.headersKeys.push_back(key);
-    request.headersValues.push_back(value);
-  }
-
-  // Parse the body
-  request.body = bufferVector[length - 1];
-
-  return request;
-}
 
 void handleConnection(int client_sock)
 {
@@ -129,7 +46,7 @@ void handleConnection(int client_sock)
     }
     else
     {
-      Request request = parseRequest(buffer);
+      Request request(buffer);
       std::cout << "Request parsed" << std::endl;
       std::cout << "Method: " << request.method << std::endl;
       std::cout << "Path: " << request.path << std::endl;
@@ -141,22 +58,22 @@ void handleConnection(int client_sock)
       }
 
       std::cout << "Body: " << request.body << std::endl;
-    }
 
-    std::string response = "HTTP/1.1 200 OK\r\n"
-                           "Content-Type: text/plain\r\n"
-                           "Content-Length: 12\r\n"
-                           "Connection: keep-alive\r\n"
-                           "\r\n"
-                           "Hello World!";
+      std::string response = "HTTP/1.1 200 OK\r\n"
+                             "Content-Type: text/plain\r\n"
+                             "Content-Length: 12\r\n"
+                             "Connection: keep-alive\r\n"
+                             "\r\n"
+                             "Hello World!";
 
-    ssize_t bytesWritten = write(client_sock, response.c_str(), response.size());
+      ssize_t bytesWritten = write(client_sock, response.c_str(), response.size());
 
-    if (bytesWritten < 0)
-    {
-      std::cerr << "Write failed" << std::endl;
-      close(client_sock);
-      return;
+      if (bytesWritten < 0)
+      {
+        std::cerr << "Write failed" << std::endl;
+        close(client_sock);
+        return;
+      }
     }
   }
 }
