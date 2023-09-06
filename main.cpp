@@ -47,17 +47,6 @@ void handleConnection(int client_sock)
     else
     {
       Request request(buffer);
-      std::cout << "Request parsed" << std::endl;
-      std::cout << "Method: " << request.method << std::endl;
-      std::cout << "Path: " << request.path << std::endl;
-      std::cout << "Version: " << request.version << std::endl;
-      std::cout << "Headers: " << std::endl;
-      for (int i = 0; i < request.headersKeys.size(); i++)
-      {
-        std::cout << request.headersKeys[i] << ": " << request.headersValues[i] << std::endl;
-      }
-
-      std::cout << "Body: " << request.body << std::endl;
 
       std::string response = "HTTP/1.1 200 OK\r\n"
                              "Content-Type: text/plain\r\n"
