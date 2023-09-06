@@ -1,2 +1,2 @@
 # weasle
-A programming language, targeted toward web api development.
+C++ Web development framework.
