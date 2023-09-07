@@ -1,4 +1,5 @@
 #include <string>
+#include <map>
 
 struct ResponseCode {
   int code;
@@ -70,4 +71,7 @@ class HttpStatus
     static const ResponseCode Loop_Detected;
     static const ResponseCode Not_Extended;
     static const ResponseCode Network_Authentication_Required;
+
+  private:
+    static const std::map<int, ResponseCode> statusMap;
 };
