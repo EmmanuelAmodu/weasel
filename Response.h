@@ -4,9 +4,13 @@
 #include <vector>
 #include "./HttpStatus.h"
 
-struct Response {
-  ResponseCode status;
-  std::string body;
-  std::vector<std::string> headers;
-  std::string to_string();
+#pragma once
+
+class Response
+{
+  public:
+    Response();
+    ResponseCode status;
+    std::string body;
+    std::map<std::string, std::string> headers;
 };

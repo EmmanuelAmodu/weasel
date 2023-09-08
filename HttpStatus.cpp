@@ -1,22 +1,5 @@
 #include "HttpStatus.h"
 
-ResponseCode HttpStatus::getResponseCode(int code)
-{
-  return statusMap.at(code);
-}
-
-std::string HttpStatus::getResponseCodeMessage(int code)
-{
-  ResponseCode response = HttpStatus::getResponseCode(code);
-  return response.message;
-}
-
-std::string HttpStatus::getResponseCodeSignature(int code)
-{
-  ResponseCode response = HttpStatus::getResponseCode(code);
-  return response.signature;
-}
-
 const ResponseCode HttpStatus::Continue{100, "Continue", "HTTP/1.1 100 Continue"};
 const ResponseCode HttpStatus::Switching_Protocols{101, "Switching Protocols", "HTTP/1.1 101 Switching Protocols"};
 const ResponseCode HttpStatus::Processing{102, "Processing", "HTTP/1.1 102 Processing"};

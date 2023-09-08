@@ -1,6 +1,8 @@
 #include <string>
 #include <map>
 
+#pragma once
+
 struct ResponseCode {
   int code;
   std::string message;
@@ -10,9 +12,6 @@ struct ResponseCode {
 class HttpStatus
 {
   public:
-    static ResponseCode getResponseCode(int code);
-    static std::string getResponseCodeMessage(int code);
-    static std::string getResponseCodeSignature(int code);
     static const ResponseCode Continue;
     static const ResponseCode Switching_Protocols;
     static const ResponseCode Processing;
@@ -71,7 +70,5 @@ class HttpStatus
     static const ResponseCode Loop_Detected;
     static const ResponseCode Not_Extended;
     static const ResponseCode Network_Authentication_Required;
-
-  private:
     static const std::map<int, ResponseCode> statusMap;
 };
