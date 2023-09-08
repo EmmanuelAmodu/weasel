@@ -40,7 +40,9 @@ void Server::handleConnection(int client_sock)
         std::cerr << "Write failed" << std::endl;
         return;
       }
-      if (request->headers.count("Connection") == 0 || request->headers["Connection"] != "keep-alive")
+      if (
+          request->headers["Connection"].empty() ||
+          request->headers["Connection"].find("keep-alive") == std::string::npos)
       {
         close(client_sock);
         return;
@@ -107,10 +109,13 @@ Response *Server::processRequest(Request *)
   response->status = HttpStatus::Not_Implemented;
   response->headers = {
       {"Content-Type", "text/plain"},
-      {"Content-Length", "12"},
+      {"Content-Length", "0"},
       {"Connection", "keep-alive"},
   };
-  response->body = "Hello World!";
+
+  response->body = "No Method implemented yet";
+  int bodyLen = response->body.length();
+  response->headers["Content-Length"] = std::to_string(bodyLen);
   return response;
 }
 
