@@ -5,7 +5,7 @@
 class Server
 {
 public:
-  Server(/*Router router*/);
+  Server(Router *router);
   void startServer();
 
 private:
@@ -17,5 +17,5 @@ private:
   std::string getResponseString(Response*);
   int sockfd;
   struct sockaddr_in server_address;
-  // Router router;
+  Router *router;
 };

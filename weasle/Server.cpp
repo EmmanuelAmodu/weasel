@@ -9,9 +9,11 @@
 #include <vector>
 #include "Server.h"
 #include "./HttpStatus.h"
+#include "./Router.h"
 
-Server::Server(/*Router router*/)
+Server::Server(Router *router)
 {
+  this->router = router;
 }
 
 void Server::handleConnection(int client_sock)
@@ -101,22 +103,24 @@ void Server::listenForConnections()
   }
 }
 
-Response *Server::processRequest(Request *)
+Response *Server::processRequest(Request *request)
 {
   // TODO Implement routing here
   // The response construction should be handled by the service it self
-  Response *response = new Response;
-  response->status = HttpStatus::Not_Implemented;
-  response->headers = {
-      {"Content-Type", "text/plain"},
-      {"Content-Length", "0"},
-      {"Connection", "keep-alive"},
-  };
+  std::pair<
+    std::vector<
+      std::function<Request *(Request *)>>,
+      std::function<Response *(Request *)>>
+  controller = router->getRoute(request->path);
+  if (controller.first.size() > 0)
+  {
+    for (auto middleware : controller.first)
+    {
+      request = middleware(request);
+    }
+  }
 
-  response->body = "No Method implemented yet";
-  int bodyLen = response->body.length();
-  response->headers["Content-Length"] = std::to_string(bodyLen);
-  return response;
+  Response *response = controller.second(request);
 }
 
 std::string Server::getResponseString(Response *response)
