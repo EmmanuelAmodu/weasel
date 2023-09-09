@@ -94,9 +94,6 @@ void Server::listenForConnections()
       continue;
     }
 
-    // std::thread client_thread(handleConnection, client_sock);
-    // client_thread.detach();
-
     std::thread client_thread([this, client_sock]
                               { this->handleConnection(client_sock); });
     client_thread.detach();
@@ -105,13 +102,12 @@ void Server::listenForConnections()
 
 Response *Server::processRequest(Request *request)
 {
-  // TODO Implement routing here
-  // The response construction should be handled by the service it self
   std::pair<
     std::vector<
       std::function<Request *(Request *)>>,
       std::function<Response *(Request *)>>
   controller = router->getRoute(request->path);
+
   if (controller.first.size() > 0)
   {
     for (auto middleware : controller.first)
@@ -120,7 +116,7 @@ Response *Server::processRequest(Request *request)
     }
   }
 
-  Response *response = controller.second(request);
+  return controller.second(request);
 }
 
 std::string Server::getResponseString(Response *response)
