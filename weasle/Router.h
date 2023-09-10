@@ -6,6 +6,8 @@
 #include "./Request.h"
 #include "./Response.h"
 
+#pragma once
+
 class Router
 {
 public:

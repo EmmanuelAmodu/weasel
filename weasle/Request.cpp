@@ -1,5 +1,7 @@
 #include "Request.h"
 
+#pragma once
+
 Request::Request()
 {
 }
