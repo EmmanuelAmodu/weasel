@@ -33,7 +33,7 @@ void Server::handleConnection(int client_sock)
     } else
     {
       Response* response = processRequest(request);
-      std::string responseString = response->getResponseString();
+      std::string responseString = response->toString();
       ssize_t bytesWritten = write(client_sock, responseString.c_str(), responseString.size());
 
       if (bytesWritten < 0)

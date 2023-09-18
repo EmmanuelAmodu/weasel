@@ -8,7 +8,7 @@ Response::Response(ResponseCode status, std::string body, std::map<std::string, 
 {
 }
 
-std::string Response::getResponseString()
+std::string Response::toString()
 {
   std::string responseString = status.signature + "\r\n";
   for (auto header : headers)

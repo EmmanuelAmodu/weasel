@@ -21,5 +21,5 @@ class Response
     std::string body;
     std::map<std::string, std::string> headers;
 
-    std::string getResponseString();
+    std::string toString();
 };
