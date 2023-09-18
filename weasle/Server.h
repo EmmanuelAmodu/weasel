@@ -17,7 +17,6 @@ private:
   Request* getRequestObject(int);
   void listenForConnections();
   Response* processRequest(Request*);
-  std::string getResponseString(Response*);
   int sockfd;
   struct sockaddr_in server_address;
   Router *router;

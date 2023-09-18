@@ -33,7 +33,7 @@ void Server::handleConnection(int client_sock)
     } else
     {
       Response* response = processRequest(request);
-      std::string responseString = getResponseString(response);
+      std::string responseString = response->getResponseString();
       ssize_t bytesWritten = write(client_sock, responseString.c_str(), responseString.size());
 
       if (bytesWritten < 0)
@@ -116,19 +116,6 @@ Response *Server::processRequest(Request *request)
   }
 
   return controller.second(request);
-}
-
-std::string Server::getResponseString(Response *response)
-{
-  std::string responseString = response->status.signature + "\r\n";
-  for (auto header : response->headers)
-  {
-    responseString += header.first + ": " + header.second + "\r\n";
-  }
-
-  responseString += "\r\n";
-  responseString += response->body + "\r\n";
-  return responseString;
 }
 
 void Server::startServer()
