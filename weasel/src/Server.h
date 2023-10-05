@@ -8,7 +8,7 @@
 class Server
 {
 public:
-  Server(Router *router);
+  Server(Router *router) : router(router);
   void startServer();
 
 private:
