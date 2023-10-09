@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(Weasel VERSION 1.0)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror -Wpedantic -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-unused-private-field -Wno-unused-value -Wno-unused-lambda-capture -Wno-unused-local-typedefs -Wno-unused-const-variable -Wno-unused-const-variable -Wno-unused-const-parameter -Wno-unused-cons")
+
+set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
+
+# use boost.asio from project root directory
+set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
+find_package(Boost 1.82.0 REQUIRED COMPONENTS system)
+include_directories(${Boost_INCLUDE_DIRS})
