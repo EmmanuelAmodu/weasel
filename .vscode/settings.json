@@ -91,5 +91,6 @@
     "valarray": "cpp",
     "variant": "cpp"
   },
-  "cmake.sourceDirectory": "C:/Users/AMODU/Desktop/weasle"
+  "cmake.sourceDirectory": "C:/Users/AMODU/Desktop/weasle",
+  "C_Cpp.default.compilerPath": "C:\\msys64\\mingw64\\bin\\g++.exe"
 }
