@@ -1,0 +1,9 @@
+Package: yajl
+Version: 2.1.0
+Port-Version: 4
+Depends: vcpkg-cmake
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 9bc64c52c1d765f35d6cd56fe0e47c31a939f8da7db3c7b40d9a58396fbd0cc5
+Description: Yet Another JSON Library
+Status: install ok installed

@@ -4,7 +4,7 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/Boost/include/boost-1_82"
+                "C:/Users/AMODU/Desktop/weasle/vcpkg_installed/x64-windows/include"
             ],
             "defines": [
                 "_DEBUG",
