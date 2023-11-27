@@ -1,5 +1,5 @@
 #include <string>
-#include <map>
+#include <unordered_map>
 
 #pragma once
 
@@ -70,5 +70,5 @@ class HttpStatus
     static const ResponseCode Loop_Detected;
     static const ResponseCode Not_Extended;
     static const ResponseCode Network_Authentication_Required;
-    static const std::map<int, ResponseCode> statusMap;
+    static const std::unordered_map<int, ResponseCode> statusMap;
 };

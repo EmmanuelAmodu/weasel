@@ -12,7 +12,6 @@ Request::Request(char buffer[])
 void Request::parse(char buffer[])
 {
   // std::cout << "Received request:\n" << buffer << std::endl;
-  std::string temp = "";
   convertBufferToVector(buffer);
   parseRequestDefinition();
   parseHeaders();
@@ -75,14 +74,14 @@ void Request::parseHeaders()
   for (int i = 1; i < length - 1; i++)
   {
     line = bufferVector[i];
-    size_t colonPos = line.find(':');
-    if (colonPos == std::string::npos)
+    size_t colonPosition = line.find(':');
+    if (colonPosition == std::string::npos)
     {
       std::cerr << "Error paring request header, Invalid Request "  << i << std::endl;
       break;
     }
-    std::string key = line.substr(0, colonPos);
-    std::string value = line.substr(colonPos + 1, line.length() - colonPos - 2);
+    std::string key = line.substr(0, colonPosition);
+    std::string value = line.substr(colonPosition + 1, line.length() - colonPosition - 2);
     headers[key] = value;
     headersKeys.push_back(key);
     headersValues.push_back(value);

@@ -1,4 +1,4 @@
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <functional>
 #include <vector>
@@ -36,7 +36,7 @@ private:
       std::function<Response *(Request *)>>
       notFoundController;
 
-  std::map<
+  std::unordered_map<
       std::string,
       std::pair<
           std::vector<std::function<Request *(Request *)>>,
