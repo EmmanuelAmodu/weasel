@@ -4,16 +4,21 @@ Router::Router()
 {
 }
 
-Router* Router::addRoute(std::string path, std::pair<std::vector<std::function<Request *(Request *)>>, std::function<Response *(Request *)>> methods)
+Router* Router::addRoute(
+  HttpMethod method,
+  std::string path,
+  std::pair<std::vector<std::function<Request *(Request *)>>, std::function<Response *(Request *)>> methods)
 {
-  routes[path] = methods;
+  std::string pathWithMethod = HttpMethodToString.at(method) + " - " + path;
+  routes[pathWithMethod] = methods;
   return this;
 }
 
-std::pair<std::vector<std::function<Request *(Request *)>>, std::function<Response *(Request *)>> Router::getRoute(std::string path)
+std::pair<std::vector<std::function<Request *(Request *)>>, std::function<Response *(Request *)>> Router::getRoute(HttpMethod method, std::string path)
 {
-  if (routes.find(path) != routes.end())
-    return routes[path];
+  std::string pathWithMethod = HttpMethodToString.at(method) + " - " + path;
+  if (routes.find(pathWithMethod) != routes.end())
+    return routes[pathWithMethod];
 
   return this->handleNotFound();
 }

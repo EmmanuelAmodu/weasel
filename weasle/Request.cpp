@@ -47,7 +47,7 @@ void Request::parseRequestDefinition()
     std::cerr << "Error parsing Methods, Invalid Request" << std::endl;
     exit(1);
   }
-  method = line.substr(0, methodEnd);
+  method = HttpStringToMethod.at(line.substr(0, methodEnd));
 
   // Parse the path
   size_t pathEnd = line.find(' ', methodEnd + 1);

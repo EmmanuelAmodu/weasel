@@ -3,6 +3,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include "./HttpMethod.cpp"
+
 #pragma once
 
 class Request
@@ -12,7 +14,7 @@ class Request
     Request(char buffer[]);
     // ~Request();
     void parse(char buffer[]);
-    std::string method;
+    HttpMethod method;
     std::string path;
     std::string version;
     std::unordered_map<std::string, std::string> headers;

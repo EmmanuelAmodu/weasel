@@ -105,7 +105,7 @@ Response *Server::processRequest(Request *request)
     std::vector<
       std::function<Request *(Request *)>>,
       std::function<Response *(Request *)>>
-  controller = router->getRoute(request->path);
+  controller = router->getRoute(request->method, request->path);
 
   if (controller.first.size() > 0)
   {

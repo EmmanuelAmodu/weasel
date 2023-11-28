@@ -5,6 +5,7 @@
 
 #include "./Request.h"
 #include "./Response.h"
+#include "./HttpMethod.cpp"
 
 #pragma once
 
@@ -18,6 +19,7 @@ public:
          std::function<Response *(Request *)>> notFoundController) : notFoundController(notFoundController){};
   
   Router* addRoute(
+			HttpMethod,
       std::string,
       std::pair<
           std::vector<std::function<Request *(Request *)>>,
@@ -27,7 +29,7 @@ public:
     std::vector<
         std::function<Request *(Request *)>>,
     std::function<Response *(Request *)>>
-    getRoute(std::string);
+    getRoute(HttpMethod, std::string);
 
 private:
   std::pair<
