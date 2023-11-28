@@ -20,7 +20,7 @@ std::pair<std::vector<std::function<Request *(Request *)>>, std::function<Respon
 
 std::pair<std::vector<std::function<Request *(Request *)>>, std::function<Response *(Request *)>> Router::handleNotFound()
 {
-  if (notFoundController .second != nullptr)
+  if (notFoundController.second != nullptr)
     return notFoundController;
 
   return std::pair<std::vector<std::function<Request *(Request *)>>, std::function<Response *(Request *)>>({}, [](Request *request) -> Response * {
