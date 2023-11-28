@@ -25,5 +25,6 @@ int main()
 
   Server server{router};
   server.startServer();
+  delete router;
   return 0;
 }

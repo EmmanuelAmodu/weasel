@@ -26,28 +26,28 @@ void Server::handleConnection(int client_sock)
   while (true)
   {
     Request* request = getRequestObject(client_sock);
-    if (request == nullptr)
-    {
-      close(client_sock);
-      return;
-    } else
-    {
+    if (request != nullptr) {
       Response* response = processRequest(request);
       std::string responseString = response->toString();
       ssize_t bytesWritten = write(client_sock, responseString.c_str(), responseString.size());
+      delete response;
+      delete request;
 
       if (bytesWritten < 0)
       {
         std::cerr << "Write failed" << std::endl;
         return;
       }
-      if (
-          request->headers["Connection"].empty() ||
-          request->headers["Connection"].find("keep-alive") == std::string::npos)
-      {
-        close(client_sock);
-        return;
-      }
+    } else if (
+      request == nullptr ||
+      request->headers["Connection"].empty() ||
+      request->headers["Connection"].find("keep-alive") == std::string::npos)
+    {
+      delete request;
+      close(client_sock);
+      return;
+    } else {
+      delete request;
     }
   }
 }
