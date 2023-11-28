@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 #pragma once
@@ -15,7 +15,7 @@ class Request
     std::string method;
     std::string path;
     std::string version;
-    std::map<std::string, std::string> headers;
+    std::unordered_map<std::string, std::string> headers;
     std::vector<std::string> headersKeys;
     std::vector<std::string> headersValues;
     std::string body;

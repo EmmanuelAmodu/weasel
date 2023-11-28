@@ -4,10 +4,6 @@ Response::Response()
 {
 }
 
-Response::Response(ResponseCode status, std::string body, std::map<std::string, std::string> headers)
-{
-}
-
 std::string Response::toString()
 {
   std::string responseString = status.signature + "\r\n";

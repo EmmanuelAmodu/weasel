@@ -58,7 +58,7 @@ const ResponseCode HttpStatus::Insufficient_Storage{507, "Insufficient Storage",
 const ResponseCode HttpStatus::Loop_Detected{508, "Loop Detected", "HTTP/1.1 508 Loop Detected"};
 const ResponseCode HttpStatus::Not_Extended{510, "Not Extended", "HTTP/1.1 510 Not Extended"};
 const ResponseCode HttpStatus::Network_Authentication_Required{511, "Network Authentication Required", "HTTP/1.1 511 Network Authentication Required"};
-const std::map<int, ResponseCode> statusMap = {
+const std::unordered_map<int, ResponseCode> statusMap = {
   {100, HttpStatus::Continue},
   {101, HttpStatus::Switching_Protocols},
   {102, HttpStatus::Processing},
