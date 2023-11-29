@@ -22,4 +22,12 @@ class Response
     std::unordered_map<std::string, std::string> headers;
 
     std::string toString();
+
+    static Response * make(std::string body);
+    static Response * make(std::string body, ResponseCode status);
+    static Response * make(
+      std::unordered_map<std::string, std::string> headers,
+      std::string body,
+      ResponseCode status
+    );
 };

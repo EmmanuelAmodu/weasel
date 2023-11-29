@@ -10,41 +10,17 @@ int main()
       ->addRoute(
           HttpMethod::GET,
           "/",
-          std::pair<std::vector<std::function<Request *(Request *)>>, std::function<Response *(Request *)>>{
-              {},
-              [](Request *request) -> Response *
-              {
-                Response *response = new Response();
-                response->status = HttpStatus::OK;
-                response->body = "THIS IS THE ROOT PATH GET METHOD";
-                response->headers = {
-                    {"Content-Type", "text/plain"},
-                    {"Connection", "keep-alive"},
-                };
-
-                int bodyLen = response->body.length();
-                response->headers["Content-Length"] = std::to_string(bodyLen);
-                return response;
-              }})
+          [](Request *request) -> Response *
+          {
+            return Response::make("THIS IS THE ROOT PATH GET METHOD");
+          })
       ->addRoute(
           HttpMethod::POST,
           "/",
-          std::pair<std::vector<std::function<Request *(Request *)>>, std::function<Response *(Request *)>>{
-              {},
-              [](Request *request) -> Response *
-              {
-                Response *response = new Response();
-                response->status = HttpStatus::OK;
-                response->body = "THIS IS THE ROOT PATH POST METHOD";
-                response->headers = {
-                    {"Content-Type", "text/plain"},
-                    {"Connection", "keep-alive"},
-                };
-
-                int bodyLen = response->body.length();
-                response->headers["Content-Length"] = std::to_string(bodyLen);
-                return response;
-              }});
+          [](Request *request) -> Response *
+          {
+            return Response::make("THIS IS THE ROOT PATH POST METHOD");
+          });
 
   Server server{router};
   server.startServer();

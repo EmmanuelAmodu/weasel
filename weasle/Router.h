@@ -19,11 +19,17 @@ public:
          std::function<Response *(Request *)>> notFoundController) : notFoundController(notFoundController){};
   
   Router* addRoute(
-			HttpMethodEnum,
-      std::string,
-      std::pair<
-          std::vector<std::function<Request *(Request *)>>,
-          std::function<Response *(Request *)>>);
+		HttpMethodEnum,
+		std::string,
+		std::function<Response *(Request *)>
+	);
+
+  Router* addRoute(
+		HttpMethodEnum,
+		std::string,
+		std::vector<std::function<Request *(Request *)>>,
+		std::function<Response *(Request *)>
+	);
 
   std::pair<
     std::vector<
