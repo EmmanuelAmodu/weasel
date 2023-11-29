@@ -7,10 +7,28 @@ Router::Router()
 Router* Router::addRoute(
   HttpMethodEnum method,
   std::string path,
-  std::pair<std::vector<std::function<Request *(Request *)>>, std::function<Response *(Request *)>> methods)
+  std::function<Response *(Request *)> funcToExecute
+)
 {
   std::string pathWithMethod = HttpMethod::httpMethodToString.at(method) + " - " + path;
-  routes[pathWithMethod] = methods;
+  routes[pathWithMethod] = {
+    {},
+    funcToExecute,
+  };
+  return this;
+}
+
+Router *Router::addRoute(
+  HttpMethodEnum method,
+  std::string path,
+  std::vector<std::function<Request *(Request *)>> middlewares,
+  std::function<Response *(Request *)> funcToExecute)
+{
+  std::string pathWithMethod = HttpMethod::httpMethodToString.at(method) + " - " + path;
+  routes[pathWithMethod] = {
+    middlewares,
+    funcToExecute,
+  };
   return this;
 }
 
