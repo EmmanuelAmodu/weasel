@@ -5,18 +5,21 @@ Router::Router()
 }
 
 Router* Router::addRoute(
-  HttpMethod method,
+  HttpMethodEnum method,
   std::string path,
   std::pair<std::vector<std::function<Request *(Request *)>>, std::function<Response *(Request *)>> methods)
 {
-  std::string pathWithMethod = HttpMethodToString.at(method) + " - " + path;
+  std::string pathWithMethod = HttpMethod::httpMethodToString.at(method) + " - " + path;
   routes[pathWithMethod] = methods;
   return this;
 }
 
-std::pair<std::vector<std::function<Request *(Request *)>>, std::function<Response *(Request *)>> Router::getRoute(HttpMethod method, std::string path)
+std::pair<
+  std::vector<std::function<Request *(Request *)>>,
+  std::function<Response *(Request *)>>
+Router::getRoute(HttpMethodEnum method, std::string path)
 {
-  std::string pathWithMethod = HttpMethodToString.at(method) + " - " + path;
+  std::string pathWithMethod = HttpMethod::httpMethodToString.at(method) + " - " + path;
   if (routes.find(pathWithMethod) != routes.end())
     return routes[pathWithMethod];
 
