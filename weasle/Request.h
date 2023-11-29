@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "./HttpMethod.cpp"
+#include "./HttpMethod.h"
 
 #pragma once
 
@@ -14,7 +14,7 @@ class Request
     Request(char buffer[]);
     // ~Request();
     void parse(char buffer[]);
-    HttpMethod method;
+    HttpMethodEnum method;
     std::string path;
     std::string version;
     std::unordered_map<std::string, std::string> headers;
