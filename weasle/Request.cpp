@@ -102,11 +102,6 @@ void Request::parseHeaders()
 void Request::parseBody()
 {
   int length = bufferVector.size();
-
   for (int i = headerEndIndex + 1; i < length; i++)
-  {
     body += trim(bufferVector[i]);
-  }
-
-  std::cout << body << std::endl;
 }
