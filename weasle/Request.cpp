@@ -1,4 +1,13 @@
 #include "Request.h"
+#include <algorithm>
+
+std::string trim(const std::string& str) {
+  size_t first = str.find_first_not_of(" \t\n\r\f\v");
+  size_t last = str.find_last_not_of(" \t\n\r\f\v");
+
+  if (first == std::string::npos) return "";
+  return str.substr(first, last - first + 1);
+}
 
 Request::Request()
 {
@@ -35,6 +44,8 @@ void Request::convertBufferToVector(char buffer[])
       temp += buffer[i];
     }
   }
+
+  bufferVector.push_back(temp);
 }
 
 void Request::parseRequestDefinition()
@@ -75,11 +86,11 @@ void Request::parseHeaders()
   {
     line = bufferVector[i];
     size_t colonPosition = line.find(':');
-    if (colonPosition == std::string::npos)
-    {
-      std::cerr << "Error paring request header, Invalid Request "  << i << std::endl;
+    if (colonPosition == std::string::npos) {
+      headerEndIndex = i;
       break;
     }
+
     std::string key = line.substr(0, colonPosition);
     std::string value = line.substr(colonPosition + 1, line.length() - colonPosition - 2);
     headers[key] = value;
@@ -91,5 +102,6 @@ void Request::parseHeaders()
 void Request::parseBody()
 {
   int length = bufferVector.size();
-  body = bufferVector[length - 1];
+  for (int i = headerEndIndex + 1; i < length; i++)
+    body += trim(bufferVector[i]);
 }
