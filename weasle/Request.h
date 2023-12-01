@@ -25,9 +25,10 @@ class Request
   private:
     std::vector<std::string> bufferVector;
     std::string line;
-    size_t methodEnd;
-    size_t pathEnd;
-    size_t versionEnd;
+    int methodEnd;
+    int pathEnd;
+    int versionEnd;
+    int headerEndIndex;
     void convertBufferToVector(char buffer[]);
     void parseRequestDefinition();
     void parseHeaders();
