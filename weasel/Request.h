@@ -9,6 +9,15 @@
 
 #pragma once
 
+enum BodyType
+{
+  JSON,
+  FORM_DATA,
+  TEXT
+};
+
+
+
 class Request
 {
   public:
@@ -23,7 +32,14 @@ class Request
     std::vector<std::string> headersKeys;
     std::vector<std::string> headersValues;
     std::string body;
-    Json::Value json();
+
+    const BodyType& getBodyType() const {
+      return bodyType;
+    }
+
+    const Json::Value& getJson() const {
+      return json;
+    }
 
   private:
     std::vector<std::string> bufferVector;
@@ -36,4 +52,8 @@ class Request
     void parseRequestDefinition();
     void parseHeaders();
     void parseBody();
+    Json::Value processJson();
+    Json::Value processForm();
+    BodyType bodyType;
+    Json::Value json;
 };
