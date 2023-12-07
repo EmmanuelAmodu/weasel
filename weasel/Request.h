@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "./HttpMethod.h"
+#include "./Utils.h"
 
 #pragma once
 

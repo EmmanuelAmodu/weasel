@@ -101,12 +101,7 @@ void Server::listenForConnections()
 
 Response *Server::processRequest(Request *request)
 {
-  std::pair<
-    std::vector<
-      std::function<Request *(Request *)>>,
-      std::function<Response *(Request *)>>
-  controller = router->getRoute(request->method, request->path);
-
+  auto controller = router->getRoute(request->method, request->path);
   if (controller.first.size() > 0)
   {
     for (auto middleware : controller.first)
