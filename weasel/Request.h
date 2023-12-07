@@ -2,6 +2,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <json/json.h>
 
 #include "./HttpMethod.h"
 #include "./Utils.h"
@@ -22,6 +23,7 @@ class Request
     std::vector<std::string> headersKeys;
     std::vector<std::string> headersValues;
     std::string body;
+    Json::Value json();
 
   private:
     std::vector<std::string> bufferVector;

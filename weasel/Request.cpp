@@ -97,3 +97,15 @@ void Request::parseBody()
   for (int i = headerEndIndex + 1; i < length; i++)
     body += Utils::trim(bufferVector[i]);
 }
+
+Json::Value Request::json()
+{
+  Json::Value root;
+  Json::Reader reader;
+  bool parsingSuccessful = reader.parse(body, root);
+  if (parsingSuccessful) {
+    return root;
+  } else {
+    throw "Request body not a valid JSON";
+  }
+}
