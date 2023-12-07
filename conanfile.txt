@@ -5,4 +5,3 @@ gtest/1.11.0
 [generators]
 CMakeDeps
 CMakeToolchain
-cmake_find_package
