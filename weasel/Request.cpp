@@ -1,14 +1,6 @@
 #include "Request.h"
 #include <algorithm>
 
-std::string trim(const std::string& str) {
-  size_t first = str.find_first_not_of(" \t\n\r\f\v");
-  size_t last = str.find_last_not_of(" \t\n\r\f\v");
-
-  if (first == std::string::npos) return "";
-  return str.substr(first, last - first + 1);
-}
-
 Request::Request()
 {
 }
@@ -44,6 +36,8 @@ void Request::convertBufferToVector(char buffer[])
       temp += buffer[i];
     }
   }
+
+  std::cout << buffer << std::endl;
 
   bufferVector.push_back(temp);
 }
@@ -103,5 +97,73 @@ void Request::parseBody()
 {
   int length = bufferVector.size();
   for (int i = headerEndIndex + 1; i < length; i++)
-    body += trim(bufferVector[i]);
+  {
+    body += Utils::trim(bufferVector[i]);
+  }
+
+  if (headers.count("Content-Type") > 0)
+  {
+    std::string contentType = headers["Content-Type"];
+    if (contentType.find("application/json") != std::string::npos)
+    {
+      bodyType = BodyType::JSON;
+      json = processJson();
+    }
+    else if (contentType.find("application/x-www-form-urlencoded") != std::string::npos)
+    {
+      bodyType = BodyType::FORM_DATA;
+      json = processForm();
+    }
+    else
+    {
+      bodyType = BodyType::TEXT;
+    }
+  }
+  else
+  {
+    bodyType = BodyType::TEXT;
+  }
+}
+
+Json::Value Request::processJson()
+{
+  Json::Value root;
+  Json::Reader reader;
+  bool parsingSuccessful = reader.parse(body, root);
+  if (parsingSuccessful) {
+    return root;
+  } else {
+    throw "Request body not a valid JSON";
+  }
+}
+
+Json::Value Request::processForm()
+{
+  Json::Value root;
+  std::vector<std::string> pairs;
+  std::string temp = "";
+  for (int i = 0; i < body.length(); i++)
+  {
+    if (body[i] == '&')
+    {
+      pairs.push_back(temp);
+      temp = "";
+    }
+    else
+    {
+      temp += body[i];
+    }
+  }
+
+  pairs.push_back(temp);
+
+  for (int i = 0; i < pairs.size(); i++)
+  {
+    std::string pair = pairs[i];
+    std::string key = pair.substr(0, pair.find('='));
+    std::string value = pair.substr(pair.find('=') + 1, pair.length() - pair.find('=') - 1);
+    root[key] = value;
+  }
+
+  return root;
 }

@@ -1,7 +1,7 @@
-#include "./weasle/Server.h"
-#include "./weasle/Router.h"
-#include "./weasle/HttpStatus.h"
-#include "./weasle/HttpMethod.h"
+#include "./weasel/Server.h"
+#include "./weasel/Router.h"
+#include "./weasel/HttpStatus.h"
+#include "./weasel/HttpMethod.h"
 
 int main()
 {

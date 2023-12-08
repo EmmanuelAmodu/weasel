@@ -2,10 +2,21 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <json/json.h>
 
 #include "./HttpMethod.h"
+#include "./Utils.h"
 
 #pragma once
+
+enum BodyType
+{
+  JSON,
+  FORM_DATA,
+  TEXT
+};
+
+
 
 class Request
 {
@@ -22,6 +33,14 @@ class Request
     std::vector<std::string> headersValues;
     std::string body;
 
+    const BodyType& getBodyType() const {
+      return bodyType;
+    }
+
+    const Json::Value& getJson() const {
+      return json;
+    }
+
   private:
     std::vector<std::string> bufferVector;
     std::string line;
@@ -33,4 +52,8 @@ class Request
     void parseRequestDefinition();
     void parseHeaders();
     void parseBody();
+    Json::Value processJson();
+    Json::Value processForm();
+    BodyType bodyType;
+    Json::Value json;
 };
