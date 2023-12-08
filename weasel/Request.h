@@ -16,8 +16,6 @@ enum BodyType
   TEXT
 };
 
-
-
 class Request
 {
   public:
@@ -53,7 +51,7 @@ class Request
     void parseHeaders();
     void parseBody();
     Json::Value processJson();
-    Json::Value processForm();
+    Json::Value processXForm();
     BodyType bodyType;
     Json::Value json;
 };

@@ -1,15 +1,39 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include "./Utils.h"
 
 class UrlParser
 {
 public:
   UrlParser(std::string url);
-  std::unordered_map<std::string, std::string> matchDynamicPath(std::vector<std::string>);
+  std::unordered_map<std::string, std::string> pathParamsToMap(std::vector<std::string>);
 
-  const std::string host;
-  const std::unordered_map<std::string, std::string> queryParams;
-  const std::vector<std::string> path;
+  const std::string &getHost() const
+  {
+    return host;
+  }
+
+  const Json::Value &getQueryParams() const
+  {
+    return queryParams;
+  }
+
+  const std::vector<std::string> &getPath() const
+  {
+    return path;
+  }
+
+  const std::string &getHashValue() const
+  {
+    return hashValue;
+  }
+
+private:
+  std::string url;
+  std::string host;
+  std::string hashValue;
+  Json::Value queryParams;
+  std::vector<std::string> path;
   std::unordered_map<std::string, std::string> pathParams;
 };

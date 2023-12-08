@@ -112,7 +112,7 @@ void Request::parseBody()
     else if (contentType.find("application/x-www-form-urlencoded") != std::string::npos)
     {
       bodyType = BodyType::FORM_DATA;
-      json = processForm();
+      json = processXForm();
     }
     else
     {
@@ -137,33 +137,7 @@ Json::Value Request::processJson()
   }
 }
 
-Json::Value Request::processForm()
+Json::Value Request::processXForm()
 {
-  Json::Value root;
-  std::vector<std::string> pairs;
-  std::string temp = "";
-  for (int i = 0; i < body.length(); i++)
-  {
-    if (body[i] == '&')
-    {
-      pairs.push_back(temp);
-      temp = "";
-    }
-    else
-    {
-      temp += body[i];
-    }
-  }
-
-  pairs.push_back(temp);
-
-  for (int i = 0; i < pairs.size(); i++)
-  {
-    std::string pair = pairs[i];
-    std::string key = pair.substr(0, pair.find('='));
-    std::string value = pair.substr(pair.find('=') + 1, pair.length() - pair.find('=') - 1);
-    root[key] = value;
-  }
-
-  return root;
+  return Utils::queryParamsToJSON(body);
 }
