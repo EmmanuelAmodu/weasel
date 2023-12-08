@@ -30,4 +30,7 @@ class Response
       std::string body,
       ResponseCode status
     );
+
+  private:
+    static Response * makeDefault(std::string body);
 };
