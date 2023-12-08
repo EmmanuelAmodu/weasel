@@ -9,6 +9,11 @@ UrlParser::UrlParser(std::string url) : url(url)
   parse();
 }
 
+void UrlParser::setPathParams(std::unordered_map<std::string, std::string> params)
+{
+  pathParams = params;
+}
+
 void UrlParser::parse()
 {
   if (url.size() > 0) {

@@ -31,6 +31,7 @@ public:
   std::vector<std::string> headersKeys;
   std::vector<std::string> headersValues;
   std::string body;
+  void Request::setPathParams(std::unordered_map<std::string, std::string>);
 
   const BodyType& getBodyType() const {
     return bodyType;
