@@ -9,7 +9,7 @@ Router *Router::addRoute(
     std::string path,
     std::function<Response *(Request *)> funcToExecute)
 {
-  std::string routePath  = registerPath(method, path);
+  std::string routePath = registerPath(method, path);
   routes[routePath] = {
       {},
       funcToExecute,
@@ -23,7 +23,7 @@ Router *Router::addRoute(
     std::vector<std::function<Request *(Request *)>> middlewares,
     std::function<Response *(Request *)> funcToExecute)
 {
-  std::string routePath  = registerPath(method, path);
+  std::string routePath = registerPath(method, path);
   routes[routePath] = {
       middlewares,
       funcToExecute,
@@ -42,9 +42,18 @@ std::string Router::registerPath(HttpMethodEnum method, std::string path)
   return pathWithMethod;
 }
 
-std::pair<std::string, std::unordered_map<std::string, std::string>> Router::getDynamicPath(std::string route)
+std::pair<
+    std::string,
+    std::unordered_map<
+        std::string,
+        std::string>>
+Router::getDynamicPath(std::string route)
 {
-  std::pair<std::string, std::unordered_map<std::string, std::string>> result = {"", {}};
+  std::pair<
+      std::string,
+      std::unordered_map<
+          std::string,
+          std::string>> result = {"", {}};
   auto routeVec = Utils::split(route, '/');
   std::unordered_map<std::string, bool> routeSegmentMap;
   for (auto rSeg : routeVec)
