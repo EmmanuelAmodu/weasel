@@ -16,6 +16,7 @@ void Request::parse(char buffer[])
   convertBufferToVector(buffer);
   parseRequestDefinition();
   parseHeaders();
+  url = UrlParser(headers["Host"] + path); 
   parseBody();
 }
 

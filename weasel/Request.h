@@ -6,6 +6,7 @@
 
 #include "./HttpMethod.h"
 #include "./Utils.h"
+#include "./UrlParser.h"
 
 #pragma once
 
@@ -18,40 +19,41 @@ enum BodyType
 
 class Request
 {
-  public:
-    Request();
-    Request(char buffer[]);
-    // ~Request();
-    void parse(char buffer[]);
-    HttpMethodEnum method;
-    std::string path;
-    std::string version;
-    std::unordered_map<std::string, std::string> headers;
-    std::vector<std::string> headersKeys;
-    std::vector<std::string> headersValues;
-    std::string body;
+public:
+  Request();
+  Request(char buffer[]);
+  // ~Request();
+  void parse(char buffer[]);
+  HttpMethodEnum method;
+  std::string path;
+  std::string version;
+  std::unordered_map<std::string, std::string> headers;
+  std::vector<std::string> headersKeys;
+  std::vector<std::string> headersValues;
+  std::string body;
 
-    const BodyType& getBodyType() const {
-      return bodyType;
-    }
+  const BodyType& getBodyType() const {
+    return bodyType;
+  }
 
-    const Json::Value& getJson() const {
-      return json;
-    }
+  const Json::Value& getJson() const {
+    return json;
+  }
 
-  private:
-    std::vector<std::string> bufferVector;
-    std::string line;
-    int methodEnd;
-    int pathEnd;
-    int versionEnd;
-    int headerEndIndex;
-    void convertBufferToVector(char buffer[]);
-    void parseRequestDefinition();
-    void parseHeaders();
-    void parseBody();
-    Json::Value processJson();
-    Json::Value processXForm();
-    BodyType bodyType;
-    Json::Value json;
+private:
+  std::vector<std::string> bufferVector;
+  std::string line;
+  int methodEnd;
+  int pathEnd;
+  int versionEnd;
+  int headerEndIndex;
+  void convertBufferToVector(char buffer[]);
+  void parseRequestDefinition();
+  void parseHeaders();
+  void parseBody();
+  Json::Value processJson();
+  Json::Value processXForm();
+  BodyType bodyType;
+  Json::Value json;
+  UrlParser url;
 };
