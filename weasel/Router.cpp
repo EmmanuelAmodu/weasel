@@ -60,7 +60,7 @@ std::pair<std::string, std::unordered_map<std::string, std::string>> Router::get
       int matchingSegment = 0;
       for (auto pSeg : path.second)
       {
-        if (routeSegmentMap[pSeg])
+        if (routeSegmentMap[pSeg] && pSeg.size() > 0)
           matchingSegment++;
       }
 

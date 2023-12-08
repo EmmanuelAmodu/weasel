@@ -23,7 +23,7 @@ int main()
           })
       ->addRoute(
           HttpMethod::GET,
-          "/:custom",
+          "/:custom/extra",
           [](Request *request) -> Response *
           {
             auto pathParams = request->getUrl().getPathParams();
