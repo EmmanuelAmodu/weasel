@@ -4,28 +4,29 @@ Router::Router()
 {
 }
 
-Router* Router::addRoute(
-  HttpMethodEnum method,
-  std::string path,
-  std::function<Response *(Request *)> funcToExecute
-)
+Router *Router::addRoute(
+    HttpMethodEnum method,
+    std::string path,
+    std::function<Response *(Request *)> funcToExecute)
 {
-  routes[registerPath(method, path)] = {
-    {},
-    funcToExecute,
+  std::string routePath  = registerPath(method, path);
+  routes[routePath] = {
+      {},
+      funcToExecute,
   };
   return this;
 }
 
 Router *Router::addRoute(
-  HttpMethodEnum method,
-  std::string path,
-  std::vector<std::function<Request *(Request *)>> middlewares,
-  std::function<Response *(Request *)> funcToExecute)
+    HttpMethodEnum method,
+    std::string path,
+    std::vector<std::function<Request *(Request *)>> middlewares,
+    std::function<Response *(Request *)> funcToExecute)
 {
-  routes[registerPath(method, path)] = {
-    middlewares,
-    funcToExecute,
+  std::string routePath  = registerPath(method, path);
+  routes[routePath] = {
+      middlewares,
+      funcToExecute,
   };
   return this;
 }
@@ -33,8 +34,9 @@ Router *Router::addRoute(
 std::string Router::registerPath(HttpMethodEnum method, std::string path)
 {
   std::string pathWithMethod = HttpMethod::httpMethodToString.at(method) + " - " + path;
-  if (path.find("/:") != std::string::npos) {
-    dynamicPath["path"] = Utils::split(path, '/');
+  if (path.find("/:") != std::string::npos)
+  {
+    dynamicPath[path] = Utils::split(path, '/');
   }
 
   return pathWithMethod;
@@ -45,14 +47,16 @@ std::pair<std::string, std::unordered_map<std::string, std::string>> Router::get
   std::pair<std::string, std::unordered_map<std::string, std::string>> result = {"", {}};
   auto routeVec = Utils::split(route, '/');
   std::unordered_map<std::string, bool> routeSegmentMap;
-  for (auto rSeg : routeVec) routeSegmentMap[rSeg] = true;
-  
+  for (auto rSeg : routeVec)
+    routeSegmentMap[rSeg] = true;
+
   std::pair<std::string, int> matchingPath;
 
   int pathPartCount = routeVec.size();
   for (auto path : dynamicPath)
   {
-    if (pathPartCount == path.second.size()) {
+    if (pathPartCount == path.second.size())
+    {
       int matchingSegment = 0;
       for (auto pSeg : path.second)
       {
@@ -80,20 +84,23 @@ std::pair<std::string, std::unordered_map<std::string, std::string>> Router::get
 }
 
 std::pair<
-  std::vector<std::function<Request *(Request *)>>,
-  std::function<Response *(Request *)>>
-Router::getRoute(Request *request/** HttpMethodEnum method, std::string path*/)
+    std::vector<std::function<Request *(Request *)>>,
+    std::function<Response *(Request *)>>
+Router::getRoute(Request *request)
 {
   std::string pathWithMethod = HttpMethod::httpMethodToString.at(request->method) + " - " + request->path;
-  if (routes.find(pathWithMethod) != routes.end()) {
+  if (routes.find(pathWithMethod) != routes.end())
+  {
     return routes[pathWithMethod];
   }
 
   auto dynamicPathData = getDynamicPath(request->path);
-  request->setPathParams(dynamicPathData.second);
-  if (dynamicPathData.first.size() > 0) {
-    pathWithMethod = HttpMethod::httpMethodToString.at(request->method) + " - " + request->path;
-    if (routes.find(pathWithMethod) != routes.end()) {
+  if (dynamicPathData.first.size() > 0)
+  {
+    request->setPathParams(dynamicPathData.second);
+    pathWithMethod = HttpMethod::httpMethodToString.at(request->method) + " - " + dynamicPathData.first;
+    if (routes.find(pathWithMethod) != routes.end())
+    {
       return routes[pathWithMethod];
     }
   }
@@ -101,21 +108,28 @@ Router::getRoute(Request *request/** HttpMethodEnum method, std::string path*/)
   return this->handleNotFound();
 }
 
-std::pair<std::vector<std::function<Request *(Request *)>>, std::function<Response *(Request *)>> Router::handleNotFound()
+std::pair<
+    std::vector<
+        std::function<Request *(Request *)>>,
+    std::function<Response *(Request *)>>
+Router::handleNotFound()
 {
   if (notFoundController.second != nullptr)
     return notFoundController;
 
-  return std::pair<std::vector<std::function<Request *(Request *)>>, std::function<Response *(Request *)>>({}, [](Request *request) -> Response * {
-    Response *response = new Response();
-    response->status = HttpStatus::Not_Found;
-    response->body = "Not found";
-    response->headers = {
-      {"Content-Type", "text/plain"},
-    };
+  return {
+      {},
+      [](Request *request) -> Response *
+      {
+        Response *response = new Response();
+        response->status = HttpStatus::Not_Found;
+        response->body = "Not found";
+        response->headers = {
+            {"Content-Type", "text/plain"},
+        };
 
-    int bodyLen = response->body.length();
-    response->headers["Content-Length"] = std::to_string(bodyLen);
-    return response;
-  });
+        int bodyLen = response->body.length();
+        response->headers["Content-Length"] = std::to_string(bodyLen);
+        return response;
+      }};
 }

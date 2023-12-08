@@ -12,7 +12,6 @@ Request::Request(char buffer[])
 
 void Request::parse(char buffer[])
 {
-  // std::cout << "Received request:\n" << buffer << std::endl;
   convertBufferToVector(buffer);
   parseRequestDefinition();
   parseHeaders();
@@ -38,7 +37,7 @@ void Request::convertBufferToVector(char buffer[])
     }
   }
 
-  std::cout << buffer << std::endl;
+  // std::cout << buffer << std::endl;
 
   bufferVector.push_back(temp);
 }
