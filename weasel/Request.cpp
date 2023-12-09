@@ -142,3 +142,8 @@ Json::Value Request::processXForm()
 {
   return Utils::queryParamsToJSON(body);
 }
+
+void Request::setPathParams(std::unordered_map<std::string, std::string> params)
+{
+  url.setPathParams(params);
+}

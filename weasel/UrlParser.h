@@ -8,7 +8,7 @@ class UrlParser
 public:
   UrlParser();
   UrlParser(std::string url);
-  std::unordered_map<std::string, std::string> pathParamsToMap(std::vector<std::string>);
+  void setPathParams(std::unordered_map<std::string, std::string>);
   void parse();
 
   const std::string &getHost() const
@@ -29,6 +29,11 @@ public:
   const std::string &getHashValue() const
   {
     return hashValue;
+  }
+
+  const auto &getPathParams() const
+  {
+    return pathParams;
   }
 
 private:

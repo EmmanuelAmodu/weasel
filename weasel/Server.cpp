@@ -101,7 +101,7 @@ void Server::listenForConnections()
 
 Response *Server::processRequest(Request *request)
 {
-  auto controller = router->getRoute(request->method, request->path);
+  auto controller = router->getRoute(request);
   if (controller.first.size() > 0)
   {
     for (auto middleware : controller.first)
