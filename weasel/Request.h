@@ -31,7 +31,7 @@ public:
   std::vector<std::string> headersKeys;
   std::vector<std::string> headersValues;
   std::string body;
-  void Request::setPathParams(std::unordered_map<std::string, std::string>);
+  void setPathParams(std::unordered_map<std::string, std::string>);
 
   const BodyType& getBodyType() const {
     return bodyType;
@@ -39,6 +39,10 @@ public:
 
   const Json::Value& getJson() const {
     return json;
+  }
+
+  const UrlParser& getUrl() const {
+    return url;
   }
 
 private:
