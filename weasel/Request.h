@@ -22,7 +22,7 @@ class Request
 public:
   Request();
   Request(char buffer[]);
-  // ~Request();
+  ~Request();
   void parse(char buffer[]);
   HttpMethodEnum method;
   std::string path;
@@ -41,7 +41,7 @@ public:
     return json;
   }
 
-  const UrlParser& getUrl() const {
+  const UrlParser* getUrl() const {
     return url;
   }
 
@@ -60,5 +60,5 @@ private:
   Json::Value processXForm();
   BodyType bodyType;
   Json::Value json;
-  UrlParser url;
+  UrlParser *url;
 };

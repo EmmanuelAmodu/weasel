@@ -2,6 +2,8 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <json/json.h>
+
 #include "./HttpStatus.h"
 
 #pragma once
@@ -31,6 +33,15 @@ class Response
       ResponseCode status
     );
 
+    static Response * makeFromJson(Json::Value body);
+    static Response * makeFromJson(Json::Value body, ResponseCode status);
+    static Response * makeFromJson(
+      std::unordered_map<std::string, std::string> headers,
+      Json::Value body,
+      ResponseCode status
+    );
+
   private:
     static Response * makeDefault(std::string body);
+    static std::string jsonToString(Json::Value body);
 };

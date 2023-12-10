@@ -10,12 +10,17 @@ Request::Request(char buffer[])
   parse(buffer);
 }
 
+Request::~Request()
+{
+  delete url;
+}
+
 void Request::parse(char buffer[])
 {
   convertBufferToVector(buffer);
   parseRequestDefinition();
   parseHeaders();
-  url = UrlParser(headers["Host"] + path); 
+  url = new UrlParser(headers["Host"] + path); 
   parseBody();
 }
 
@@ -144,5 +149,5 @@ Json::Value Request::processXForm()
 
 void Request::setPathParams(std::unordered_map<std::string, std::string> params)
 {
-  url.setPathParams(params);
+  url->setPathParams(params);
 }
