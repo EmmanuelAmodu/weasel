@@ -15,21 +15,21 @@ Server::Server(Router *router)
   this->router = router;
 }
 
-void Server::handleConnection(int client_sock)
+void Server::handleConnection(int clientSock)
 {
   struct timeval timeout;
   timeout.tv_sec = 60;
   timeout.tv_usec = 0;
-  setsockopt(client_sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout));
-  setsockopt(client_sock, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout, sizeof(timeout));
+  setsockopt(clientSock, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout));
+  setsockopt(clientSock, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout, sizeof(timeout));
 
   while (true)
   {
-    Request* request = getRequestObject(client_sock);
+    Request* request = getRequestObject(clientSock);
     if (request != nullptr) {
       Response* response = processRequest(request);
       std::string responseString = response->toString();
-      ssize_t bytesWritten = write(client_sock, responseString.c_str(), responseString.size());
+      ssize_t bytesWritten = write(clientSock, responseString.c_str(), responseString.size());
       delete response;
       delete request;
 
@@ -44,7 +44,7 @@ void Server::handleConnection(int client_sock)
       request->headers["Connection"].find("keep-alive") == std::string::npos)
     {
       delete request;
-      close(client_sock);
+      close(clientSock);
       return;
     } else {
       delete request;
@@ -52,10 +52,10 @@ void Server::handleConnection(int client_sock)
   }
 }
 
-Request* Server::getRequestObject(int client_sock)
+Request* Server::getRequestObject(int clientSock)
 {
   char buffer[2048] = {0};
-  ssize_t bytesRead = read(client_sock, buffer, 2047);
+  ssize_t bytesRead = read(clientSock, buffer, 2047);
 
   if (bytesRead < 0)
   {
@@ -83,19 +83,19 @@ void Server::listenForConnections()
 {
   while (true)
   {
-    struct sockaddr_in client_address;
-    socklen_t client_len = sizeof(client_address);
-    int client_sock = accept(sockfd, (struct sockaddr *)&client_address, &client_len);
+    struct sockaddr_in clientAddress;
+    socklen_t clientLen = sizeof(clientAddress);
+    int clientSock = accept(sockfd, (struct sockaddr *)&clientAddress, &clientLen);
 
-    if (client_sock == -1)
+    if (clientSock == -1)
     {
       std::cerr << "Accept failed";
       continue;
     }
 
-    std::thread client_thread([this, client_sock]
-                              { this->handleConnection(client_sock); });
-    client_thread.detach();
+    std::thread clientThread([this, clientSock]
+                              { this->handleConnection(clientSock); });
+    clientThread.detach();
   }
 }
 
@@ -115,7 +115,7 @@ Response *Server::processRequest(Request *request)
 
 void Server::startServer()
 {
-  int sockfd = bindSocket();
+  bindSocket();
   if (sockfd != -1)
     listenForConnections();
 }
@@ -130,12 +130,11 @@ int Server::bindSocket()
     return -1;
   }
 
-  sockaddr_in server_address;
-  server_address.sin_family = AF_INET;
-  server_address.sin_port = htons(8080);
-  server_address.sin_addr.s_addr = INADDR_ANY;
+  serverAddress.sin_family = AF_INET;
+  serverAddress.sin_port = htons(8080);
+  serverAddress.sin_addr.s_addr = INADDR_ANY;
 
-  if (bind(sockfd, (struct sockaddr *)&server_address, sizeof(server_address)) == -1)
+  if (bind(sockfd, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) == -1)
   {
     std::cerr << "Bind failed";
     return -1;

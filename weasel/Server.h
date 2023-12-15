@@ -18,6 +18,6 @@ private:
   void listenForConnections();
   Response* processRequest(Request*);
   int sockfd;
-  struct sockaddr_in server_address;
+  struct sockaddr_in serverAddress;
   Router *router;
 };
