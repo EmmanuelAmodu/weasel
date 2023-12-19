@@ -1,4 +1,11 @@
 .vscode
-build
+dependencies
 a.out
 CMakeUserPresets.json
+CMakeFiles
+cmake_install.cmake
+CTestTestfile.cmake
+Makefile
+libWeasel.a
+CMakeCache.txt
+WeaselTestApp
