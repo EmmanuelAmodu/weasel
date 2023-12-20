@@ -11,6 +11,6 @@ https://cmake.org/download/
 `conan install . -of ./dependencies`
 
 ## To run the project
-* Run `cmake build . -DCMAKE_TOOLCHAIN_FILE=./dependencies/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release` to build
+* Run `cmake build . -DCMAKE_TOOLCHAIN_FILE=./dependencies/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release` to setup cmake project
 * Run `cmake --build .` to build
 * Run `./WeaselTestApp` to start sample server
